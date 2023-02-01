@@ -18,6 +18,9 @@ async function startNoiseCancellation() {
         const inputData = event.inputBuffer.getChannelData(0);
         const outputData = event.outputBuffer.getChannelData(0);
 
+        // Calcular la señal de ruido aquí
+        const noiseData = inputData.map(x => x * -1);
+
         // Amplificar la señal recibida aquí
         const gain = 10;
         const amplifiedData = inputData.map(x => x * gain);
