@@ -18,10 +18,12 @@ async function startNoiseCancellation() {
         const inputData = event.inputBuffer.getChannelData(0);
         const outputData = event.outputBuffer.getChannelData(0);
 
-        // Aplicar la función de cancelación de ruido aquí
+        // Calcular la señal de ruido aquí
+        const noiseData = inputData.map(x => x * -1);
 
+        // Aplicar la función de cancelación de ruido aquí
         for (let i = 0; i < inputData.length; i++) {
-            outputData[i] = inputData[i];
+            outputData[i] = inputData[i] - noiseData[i];
         }
     };
 
