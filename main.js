@@ -19,15 +19,10 @@ async function startNoiseCancellation() {
         const outputData = event.outputBuffer.getChannelData(0);
 
         // Calcular la señal de ruido aquí
-        const noiseData = inputData.map(x => x * -1);
+        const noiseData = inputData;
 
-        // Amplificar la señal recibida aquí
-        const gain = 10;
-        const amplifiedData = inputData.map(x => x * gain);
-
-        // Aplicar la función de cancelación de ruido aquí
-        for (let i = 0; i < amplifiedData.length; i++) {
-            outputData[i] = amplifiedData[i] - noiseData[i];
+        for (let i = 0; i < inputData.length; i++) {
+            outputData[i] = inputData[i] - noiseData[i];
         }
     };
 
@@ -50,4 +45,11 @@ disabled.addEventListener("click", function () {
     }
 });
 
-transparence.addEventListener("click", ActivarTRANS);
+transparence.addEventListener("click", function () {
+    ancEnabled = !ancEnabled;
+    if (!ancEnabled && stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+        noiseSuppressor.disconnect();
+    }
+});
